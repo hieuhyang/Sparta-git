@@ -9,6 +9,14 @@
     <!--bootstrap css-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
     <style>
         * {
             font-family: 'Sunflower',
@@ -21,14 +29,60 @@
         }
 
         .btn-box {
-             width: 200px;
-             margin: 50px auto;
-         }
+            width: 200px;
+            margin: 50px auto;
+        }
 
-         .btn {
-             width: 200px;
-         }
+        .btn {
+            width: 200px;
+        }
     </style>
+    <script>
+        function isCellPhone(p) {
+            var regExp = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})[-][0-9]{3,4}[-][0-9]{4}$/;
+            return regExp.test(p);
+        }
+
+        function order() {
+            let name = $('#name').val();
+            let count = $('#count').val();
+            let address = $('#add').val();
+            let phone = $('#number').val();
+
+            if (name === '') {
+                alert('이름을 입력해주세요')
+                $('#name').focus()
+                return
+            } else if (count === '') {
+                alert('수량을 입력해주세요')
+                $('#count').focus()
+                return
+            } else if (address === '') {
+                alert('주소를 입력해주세요')
+                $('#add').focus()
+                return
+            } else if (phone === '') {
+                alert('휴대폰번호를 입력해주세요')
+                $('#number').focus()
+                return
+            } else if (!isCellPhone(phone)) {
+                alert('휴대폰번호 입력 형식이 틀립니다. \n 010-0000-0000으로 입력해주세요')
+                return
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/order",
+                data: { name_give: name, count_give: count, add_give: add, number_give: number },
+                success: function (response) {
+                    if (response['result'] === 'success') {
+                        alert('주문 완료!');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+    </script>
 </head>
 
 <body>
@@ -44,13 +98,14 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-default">주문자 이름</span>
             </div>
-            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            <input type="text" class="form-control" id="name" aria-label="Default"
+                aria-describedby="inputGroup-sizing-default">
         </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelect01">수량</label>
+                <label class="input-group-text" for="count">수량</label>
             </div>
-            <select class="custom-select" id="inputGroupSelect01">
+            <select class="custom-select" id="count">
                 <option selected>수량을 선택하세요</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -66,17 +121,19 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-default">주소</span>
             </div>
-            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            <input type="text" id="add" class="form-control" aria-label="Default"
+                aria-describedby="inputGroup-sizing-default">
         </div>
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-default">전화번호</span>
             </div>
-            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            <input type="text" id="number" class="form-control" aria-label="Default"
+                aria-describedby="inputGroup-sizing-default">
         </div>
         <div class="btn-box">
-            <button type="button" class="btn btn-primary btn-lg">주문하기</button>
+            <button onclick="order()" type="button" id="btn-box" class="btn btn-primary btn-lg">주문하기</button>
         </div>
 </body>
 
