@@ -1,189 +1,25 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
-    <!-- Webpage Title -->
-    <title>Hello, world!향</title>
+  <head>
+		
+		<!-- Webpage Title -->
+    <title>Hello, world!</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <!-- JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-
-    <style>
-        .wrap {
-            width: 900px;
-            margin: auto;
-            font-family: 'Stylish', sans-serif;
-        }
-
-        .mycomment {
-            color: blue;
-        }
-
-        .guestmemo {
-            width: 500px;
-        }
-
-        .box {
-            border: 3px solid;
-            padding: 20px;
-            border-radius: 5px;
-            width: 500px;
-            margin: 20px auto 20px auto;
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		
+		<!-- JS -->		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     
-    <script>
-        //0.포스팅박스가 닫힌 상태로 시작한다.
-        //1. 포스팅박스 열기를 눌렀을떄
-        //2. 포스팅 박스가 열리고
-        //3. 글자도 포스팅 박스 닫기로 바뀐다
-
-        $(document).ready(function () {
-            listing();
-        });
-
-        function listing() {
-            $("#cards-box").empty()
-            console.log("?")
-            
-            $.ajax({
-              type: "get",
-              url: "http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99",
-              success: function (response) {
-                console.log(response)
-              }
-            });
-        }
-
-        function openClose() {
-            if ($('#post-box').css("display") === 'none') {
-                $('#post-box').show();
-                $('#post-button').text('포스팅박스 닫기');
-            }
-            else {
-                $('#post-box').hide();
-                $('#post-button').text('포스팅박스 열기');
-            }
-        }
-    </script>
-</head>
-
-<body>
-    <div class="wrap">
-        <div class="jumbotron">
-            <h1 class="display-4">나홀로 링크 메모장!</h1>
-            <p class="lead">중요한 링크를 저장해두고, 나중에 볼 수 있는 공간입니다</p>
-            <hr class="my-4">
-            <!-- <p>It uses utility classes for typography and spacing to space content out within the larger container.</p> -->
-            <a id='post-button' class="btn btn-primary btn-lg" href="#" role="button" onclick="openClose()">포스팅박스 열기</a>
-        </div>
-        <div class="box" id="post-box">
-            <div class="form-group">
-                <label for="exampleInputURL">아티클 url</label>
-                <input type="email" class="form-control" id="exampleInputURL" aria-describedby="emailHelp">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputComment">간단 코멘트</label>
-                <textarea name="comment" class="form-control" id="exampleInputComment"></textarea>
-            </div>
-            <button type="save" class="btn btn-primary">기사저장</button>
-        </div>
-        <div class="card-columns" id='cards-box'>
-            <div class="card">
-                <img src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-                    class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="#">
-                            여기 기사 제목이 들어가죠
-                        </a>
-                    </h5>
-                    <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
-                    <p class="mycomment">여기에 코멘트가 들어갑니다.</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-                    class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="#">
-                            여기 기사 제목이 들어가죠
-                        </a>
-                    </h5>
-                    <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
-                    <p class="mycomment">여기에 코멘트가 들어갑니다.</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-                    class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="#">
-                            여기 기사 제목이 들어가죠
-                        </a>
-                    </h5>
-                    <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
-                    <p class="mycomment">여기에 코멘트가 들어갑니다.</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-                    class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="#">
-                            여기 기사 제목이 들어가죠
-                        </a>
-                    </h5>
-                    <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
-                    <p class="mycomment">여기에 코멘트가 들어갑니다.</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-                    class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="#">
-                            여기 기사 제목이 들어가죠
-                        </a>
-                    </h5>
-                    <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
-                    <p class="mycomment">여기에 코멘트가 들어갑니다.</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-                    class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="#">
-                            여기 기사 제목이 들어가죠
-                        </a>
-                    </h5>
-                    <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
-                    <p class="mycomment">여기에 코멘트가 들어갑니다.</p>
-                </div>
-            </div>
-        </div>
-</body>
-
+  </head>
+  <body>
+    <h1>Hello, world!</h1>
+    <button type="button" class="btn btn-primary">Primary</button>
+  </body>
 </html>
