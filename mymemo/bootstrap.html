@@ -43,9 +43,69 @@
             padding: 20px;
             border-radius: 5px;
             width: 500px;
-            margin: 20px auto 20px auto
+            margin: 20px auto 20px auto;
+            display: none;
         }
     </style>
+
+    <script>
+        //0.포스팅박스가 닫힌 상태로 시작한다.
+        //1. 포스팅박스 열기를 눌렀을떄
+        //2. 포스팅 박스가 열리고
+        //3. 글자도 포스팅 박스 닫기로 바뀐다
+
+        $(document).ready(function () {
+            listing();
+        });
+
+        function listing() {
+            $("#cards-box").empty()
+            console.log("?")
+            $.ajax({
+                type: "get",
+                url: "http://spartacodingclub.shop/post",
+                success: function (response) {
+                    console.log(response)
+                    let articles = response["articles"]
+                    for (let i = 0; i < articles.length; i++) {
+                        let article = articles[i]
+
+                        let comment = article["comment"]
+                        let desc = article["desc"]
+                        let image = article["image"]
+                        let url = article["url"]
+                        let title = article["title"]
+
+                        let html_temp = `   <div class="card">
+                                        <img src=${image}
+                                         class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                       <h5 class="card-title">
+                                       <a href=${url}>
+                                         ${title}
+                                        </a>
+                                        </h5>
+                                        <p class="card-text">${desc}</p>
+                                        <p class="mycomment">${comment}</p>
+                                    </div>
+                                    </div>`
+                        $("#cards-box").append(html_temp)
+                    }
+            }});
+
+        }
+
+        function openClose() {
+            if ($('#post-box').css("display") === 'none') {
+                $('#post-box').show();
+                $('#post-button').text('포스팅박스 닫기');
+            }
+            else {
+                $('#post-box').hide();
+                $('#post-button').text('포스팅박스 열기');
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -55,9 +115,9 @@
             <p class="lead">중요한 링크를 저장해두고, 나중에 볼 수 있는 공간입니다</p>
             <hr class="my-4">
             <!-- <p>It uses utility classes for typography and spacing to space content out within the larger container.</p> -->
-            <a class="btn btn-primary btn-lg" href="#" role="button">포스팅박스 열기</a>
+            <a id='post-button' class="btn btn-primary btn-lg" href="#" role="button" onclick="openClose()">포스팅박스 열기</a>
         </div>
-        <div class="box">
+        <div class="box" id="post-box">
             <div class="form-group">
                 <label for="exampleInputURL">아티클 url</label>
                 <input type="email" class="form-control" id="exampleInputURL" aria-describedby="emailHelp">
@@ -68,7 +128,7 @@
             </div>
             <button type="save" class="btn btn-primary">기사저장</button>
         </div>
-        <div class="card-columns">
+        <div class="card-columns" id='cards-box'>
             <div class="card">
                 <img src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
                     class="card-img-top" alt="...">
