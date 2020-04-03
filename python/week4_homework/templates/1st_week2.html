@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1주차과제_서향</title>
+    <link href="https://fonts.googleapis.com/css?family=Sunflower:300&display=swap" rel="stylesheet">
+    <!--bootstrap css-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <style>
+        * {
+            font-family: 'Sunflower',
+                sans-serif;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+        .btn-box {
+            width: 200px;
+            margin: 50px auto;
+        }
+
+        .btn {
+            width: 200px;
+        }
+    </style>
+    <script>
+        function isCellPhone(p) {
+            var regExp = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})[-][0-9]{3,4}[-][0-9]{4}$/;
+            return regExp.test(p);
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+        function order() {
+            let name = $('#name').val();
+            let count = $('#count').val();
+            let address = $('#add').val();
+            let phone = $('#number').val();
+
+            if (name === '') {
+                alert('이름을 입력해주세요')
+                $('#name').focus()
+                return
+            } else if (count === '') {
+                alert('수량을 입력해주세요')
+                $('#count').focus()
+                return
+            } else if (address === '') {
+                alert('주소를 입력해주세요')
+                $('#add').focus()
+                return
+            } else if (phone === '') {
+                alert('휴대폰번호를 입력해주세요')
+                $('#number').focus()
+                return
+            } else if (!isCellPhone(phone)) {
+                alert('휴대폰번호 입력 형식이 틀립니다. \n 010-0000-0000으로 입력해주세요')
+                return
+            }
+            $.ajax({
+                type: "POST",
+                url: "/order",
+                data: { name_give: name, count_give: count, add_give: add, number_give: number },
+                success: function (response) {
+                    if (response['result'] === 'success') {
+                        alert('주문 완료!');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        function listing() {
+            // 1. 주문 목록을 서버에 요청하기
+            // 2. 요청 성공 여부 확인하기
+            // 3. 요청 성공했을 때 리뷰를 올바르게 화면에 나타내기
+            $.ajax({
+                type: "GET",
+                url: "/order",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        console.log(response['data'])
+                        // 2. 성공했을 때 리뷰를 올바르게 화면에 나타내기
+                        let orders = response['data']
+                        for (let i = 0; i < orders.length; i++) {
+                            let order = orders[i]
+                            make_card(order['name'], order['count'], order['add'], order['number'])
+                        }
+                    } else {
+                        alert('잘못 입력했습니다');
+                    }
+                }
+            });
+        }
+        function make_card(name, count, add, number) {
+            let temp_html = '<tr>\
+                                <td>'+ name + '</td>\
+                                <td>'+ count + '</td>\
+                                <td>'+ add + '</td>\
+                                <td>'+ number + '</td>\
+                            </tr>';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class='wrap'>
+        <img src="http://www.whitecotton.kr/data/goods/19/07/30/1000004305/1000004305_detail_192.jpg" /></br>
+        <p>
+            <h1 style="display: inline;">양초를 팝니다</h1>가격:3,000원/개
+        </p>
+        <p>
+            이 양초는 사실 특별한 힘을 가지고 있어요. 양초를 켜고 소원을 빌면 짜자잔 뭐든지 이뤄지게 된답니다. 하나 사가세요! 대나무 향이 아주 좋아요
+        </p>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">주문자 이름</span>
+            </div>
+            <input type="text" class="form-control" id="name" aria-label="Default"
+                aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="count">수량</label>
+            </div>
+            <select class="custom-select" id="count">
+                <option selected>수량을 선택하세요</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+            </select>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">주소</span>
+            </div>
+            <input type="text" id="add" class="form-control" aria-label="Default"
+                aria-describedby="inputGroup-sizing-default">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">전화번호</span>
+            </div>
+            <input type="text" id="number" class="form-control" aria-label="Default"
+                aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="btn-box">
+            <button onclick="order()" type="button" id="btn-box" class="btn btn-primary btn-lg">주문하기</button>
+        </div>
+        <div class="orders">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">주문자</th>
+                        <th scope="col">수량</th>
+                        <th scope="col">주소</th>
+                        <th scope="col">전화번호</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                </tbody>
+            </table>
+        </div>
+</body>
+
+</html>
